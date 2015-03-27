@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format='2'>
+  <name>lepton_camera</name>
+  <version>0.1.0</version>
+  <description>The lepton package</description>
+  <maintainer email="kaiserfabian@hotmail.com">Chao Qu</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>nodelet</depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+
+  <export>
+      <nodelet plugin="${prefix}/nodelet_plugins.xml"/>
+  </export>
+</package>
