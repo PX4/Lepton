@@ -380,7 +380,7 @@ int main(int argc, char *argv[]) {
 		ros::spinOnce();
 
 		SpiClosePort(0);
-		usleep(37038);
+		//usleep(37038);
 	}
 
 	return ret;
