@@ -35,6 +35,7 @@
 #include <linux/spi/spidev.h>
 #include <limits.h>
 #include "ros/ros.h"
+#include "ros/time.h"
 #include "std_msgs/String.h"
 #include "std_msgs/MultiArrayLayout.h"
 #include "std_msgs/MultiArrayDimension.h"
@@ -53,6 +54,9 @@ static void pabort(const char *s) {
 #define VOSPI_FRAME_SIZE (164)
 uint8_t lepton_frame_packet[VOSPI_FRAME_SIZE];
 static unsigned int lepton_image[80][80] = { 0 };
+ros::Time capture_time;
+
+
 
 void resync() {
 	// This function tries to resynchronize the video stream
@@ -95,6 +99,12 @@ int transfer(int fd, int current_frame) {
 	int i;
 	int packet_number;
 	uint8_t tx[VOSPI_FRAME_SIZE] = { 0, };
+
+
+	// Take capture time of image corresponding to first package
+	if(current_frame==0){
+		 capture_time=ros::Time::now();
+	}
 
 	struct spi_ioc_transfer tr;
 
@@ -374,6 +384,9 @@ int main(int argc, char *argv[]) {
 		}
 
 		// Publish data over ROS
+
+		IR_data.header.stamp.sec=capture_time.sec;
+		IR_data.header.stamp.nsec=capture_time.nsec;
 		data.publish(IR_data);
 		ROS_INFO("Successfully published IR image!");
 
